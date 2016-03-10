@@ -8,7 +8,14 @@
 
 import UIKit
 
+// Protocol definition - top of LocationsViewController.swift
+protocol LocationsViewControllerDelegate : class {
+    func locationsPickedLocation(controller: LocationsViewController, latitude: NSNumber, longitude: NSNumber)
+}
+
 class LocationsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+
+    weak var delegate : LocationsViewControllerDelegate!
 
     // TODO: Fill in actual CLIENT_ID and CLIENT_SECRET
     let CLIENT_ID = "QA1L0Z0ZNA2QVEEDHFPQWK0I5F1DE3GPLSNW4BZEBGJXUCFL"
@@ -83,6 +90,25 @@ class LocationsViewController: UIViewController, UITableViewDelegate, UITableVie
         task.resume()
     }
 
+
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! LocationCell
+        let venue = results[indexPath.row] as! NSDictionary
+        
+        let lat = venue.valueForKeyPath("location.lat") as! NSNumber
+        let lng = venue.valueForKeyPath("location.lng") as! NSNumber
+        
+        
+//        let lat = cell.location["location"]!["lat"]! as! NSNumber
+//        let lng = cell.location["location"]!["lng"]! as! NSNumber
+        
+        delegate.locationsPickedLocation(self, latitude: lat, longitude: lng)
+        
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
