@@ -60,11 +60,9 @@ class PhotoMapViewController: UIViewController, UINavigationControllerDelegate, 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // set delegate to locations VC
         // Worst case scenario, doesnt segue
-        if let locationsVC = sender as? LocationsViewController{
-            locationsVC.delegate  = self
+        if let locationsVC = segue.destinationViewController as? LocationsViewController {
+            print("Setting the locationsVC.delegate to self")
+            locationsVC.delegate = self
         }
-        
     }
-
-
 }
